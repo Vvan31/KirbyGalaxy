@@ -1,5 +1,7 @@
 # KirbyGalaxy
 Game project for computational graphics course.  
+![image](https://user-images.githubusercontent.com/71792220/158513644-7c16ce37-778f-4a9d-b405-3ae9cc568d7c.png)
+
 
 determinar los requerimientos funcionales que se van a resolver.
 
