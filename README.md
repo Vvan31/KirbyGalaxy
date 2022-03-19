@@ -1,11 +1,12 @@
 # KirbyGalaxy
 
 Este juego es tipo “endless run” en el que nuestro personaje Kirby tiene que esquivar rocas mientras navega a través de una galaxia en su estrella para poder volver a casa antes de que se descongele su helado. 
+
 El modelo que se usará es el siguiente: "Kirby on a star" (https://skfb.ly/ooNBN) by Knighthart is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). 
 
 ### Requerimientos funcionales:
 
-1 Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral. Kirby tiene que moverse solo de izquierda a derecha (movimiento fluido).
+1. Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral. Kirby tiene que moverse solo de izquierda a derecha (movimiento fluido).
 2. Se van a tener 2 tipos de obstáculos con el mismo tipo de funcionalidad: al tocarlos Kirby pierde.
 3 Cristales power up para activar el mouthfull mode y ser inmortal por 5 segundos. 
 4. Kirby tendrá un temporizador el cual medirá su tiempo de juego.
