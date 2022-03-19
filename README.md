@@ -1,17 +1,45 @@
 # KirbyGalaxy
-Game project for computational graphics course.  
-![image](https://user-images.githubusercontent.com/71792220/158513644-7c16ce37-778f-4a9d-b405-3ae9cc568d7c.png)
 
 
-determinar los requerimientos funcionales que se van a resolver.
 
-Describir la forma en la que se van a cumplir los requerimientos
-  mencionando si es necesario utilizar alguna librería adicional
-  qué elementos de gráficas computacionales se van a necesitar para cumplirlos.
+
+
+Este juego es tipo “endless run” en el que nuestro personaje Kirby tiene que esquivar rocas mientras navega a través de una galaxia en su estrella para poder volver a casa antes de que se descongele su helado. 
+El modelo que se usará es el siguiente: "Kirby on a star" (https://skfb.ly/ooNBN) by Knighthart is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). 
+Requerimientos funcionales:
+Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral. Kirby tiene que moverse solo de izquierda a derecha (movimiento fluido).
+Se van a tener 2 tipos de obstáculos con el mismo tipo de funcionalidad: al tocarlos Kirby pierde.
+Cristales power up para activar el mouthfull mode y ser inmortal por 5 segundos. 
+Kirby tendrá un temporizador el cual medirá su tiempo de juego.
+Pantalla de inicio.
+Pantalla de game over con el tiempo de juego. 
+Pantalla de win 
   
-Definir un plan de trabajo
-  qué tareas van a ser necesarias
-  quién del equip va a estar desarrollándolas.
+
+
+
+1. El movimiento de Kirby será completamente horizontal, su movimiento será fluido, sin presencia de carriles.
+2. Los obstáculos propuestos son asteroides y bolas de fuego.
+3. Es un cristal especial que al estar en contacto con Kirby este se vuelve inmortal refiriéndose a que los obstáculos no lo afectan.
+4. Este tiempo será contado para ver cuanto dura el jugador
+5. La pantalla tendrá botones para comenzar el juego o salir.
+6. La pantalla indicará que perdiste con el tiempo marcado
+7. La pantalla tendrá a Kirby con un letrero de win.
+
+
+
   
-descripción del proyecto, todos los requerimientos establecidos, y crear una estructura de carpetas diferentes para las librerías, los assets, y los archivos del proyecto.
-Considerar que cada semana se van a hacer revisiones de proyecto directamente en el repositorio. 
+
+
+
+Plan de Trabajo
+Usaremos la metodología scrum para el desarrollo del proyecto.
+Usaremos el desarrollo en espiral para el proyecto.
+Haremos reuniones por videollamada  semanales de 1hr para verificar el trabajo y los avances.
+Individualmente dedicaremos aprox. 30 min diarios para desarrollar el proyecto.
+Tareas
+Determinar objetivos Los 3
+Análisis de riesgo Los 3
+Planificación Los 3
+Desarrollo Los 3
+Pruebas
