@@ -1,20 +1,157 @@
 "use strict"; 
 
 import * as THREE from "../libs/three.js/three.module.js"
-import {addMouseHandler} from "./sceneHandlers.js"
+import {addMouseHandler} from "../libs/sceneHandlers.js"
 import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
+import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
+import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
+
 
 let renderer = null, scene = null, camera = null
 let controls = null;
 const duration = 5000; // ms
 let currentTime = Date.now();
 
+
+//Ejemplos clase
+let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
+
+let kirbylUrl = {obj:'../models/obj/Kirbysentado.obj', mtl:'../models/obj/Kirbysentado.mtl'};
+let objectList = []
 function main() 
 {
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
+    //objeto
+    const loader = new OBJLoader();
+
+    loader.load( '../models/obj/Kirby.obj', function ( glb ) {
+
+        scene.add( glb.scene );
+
+    }, undefined, function ( error ) {
+
+        console.error( error );
+
+    } );
+
     update();
 }
+
+function onError ( err ){ console.error( err ); };
+
+function onProgress( xhr ) 
+{
+    if ( xhr.lengthComputable ) {
+
+        const percentComplete = xhr.loaded / xhr.total * 100;
+        console.log( xhr.target.responseURL, Math.round( percentComplete, 2 ) + '% downloaded' );
+    }
+}
+
+async function loadJson(url, objectList)
+{
+    try 
+    {
+        const object = await new THREE.ObjectLoader().loadAsync(url, onProgress, onError);
+
+        object.castShadow = true;
+        object.receiveShadow = false;
+
+        object.position.y = -1;
+        object.position.x = 1.5;
+
+        object.name = "jsonObject";
+
+        objectList.push(object);
+        scene.add(object);
+    }
+    catch (err) 
+    {
+        return onError(err);
+    }
+}
+
+async function loadObj(objModelUrl, objectList)
+{
+    try
+    {
+        const object = await new OBJLoader().loadAsync(objModelUrl.obj, onProgress, onError);
+
+        let texture = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.map) : null;
+        let normalMap = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.normalMap) : null;
+        let specularMap = objModelUrl.hasOwnProperty('specularMap') ? new THREE.TextureLoader().load(objModelUrl.specularMap) : null;
+
+        console.log(object);
+        
+        // object.traverse(function (child) 
+        // {
+            for(const child of object.children)
+            {
+                //     if (child.isMesh)
+                child.castShadow = true;
+                child.receiveShadow = true;
+                child.material.map = texture;
+                child.material.normalMap = normalMap;
+                child.material.specularMap = specularMap;
+            }
+        // });
+
+        object.scale.set(10, 10, 10);
+        object.position.z = -1;
+        object.position.x = -1.5;
+        object.rotation.y = -3;
+        object.rotation.x = 50;
+        object.name = "objObject";
+        
+        objectList.push(object);
+        scene.add(object);
+    }
+    catch (err) 
+    {
+        onError(err);
+    }
+}
+
+async function loadObjMtl(objModelUrl, objectList)
+{
+    try
+    {
+        const mtlLoader = new MTLLoader();
+
+        const materials = await mtlLoader.loadAsync(objModelUrl.mtl, onProgress, onError);
+
+        materials.preload();
+        
+        const objLoader = new OBJLoader();
+
+        objLoader.setMaterials(materials);
+
+        const object = await objLoader.loadAsync(objModelUrl.obj, onProgress, onError);
+    
+        object.traverse(function (child) {
+            if (child.isMesh)
+            {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        
+        console.log(object);
+
+        object.position.y += 1;
+        object.scale.set(0.15, 0.15, 0.15);
+
+        objectList.push(object);
+        scene.add(object);
+    }
+    catch (err)
+    {
+        onError(err);
+    }
+}
+
+
 
 /**
  * Updates the rotation of the objects in the scene
@@ -26,7 +163,6 @@ function animate()
     currentTime = now;
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
-
 }
 
 /**
@@ -71,8 +207,13 @@ function createScene(canvas)
     const ambientLight = new THREE.AmbientLight(0xffccaa, 0.8);
     scene.add(ambientLight);
     
+
+    //Obj kirbo
+    loadObjMtl(kirbylUrl, objectList);
+
+ 
     // add mouse handling so we can rotate the scene
-    addMouseHandler(canvas, solarSystemGroup);
+    //addMouseHandler(canvas, solarSystemGroup);
 }
 
 main();
