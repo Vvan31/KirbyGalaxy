@@ -43,15 +43,18 @@ function main()
     update();
 }
 function createSquare(){
-    const geometry = new THREE.BoxGeometry(1,1,1);
-    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+    const geometry = new THREE.RingGeometry(0.9,1,10);
+    const material = new THREE.MeshBasicMaterial({color: 0x44aa});
     cube = new THREE.Mesh(geometry, material);
     squares.push(cube);
     scene.add(cube);
 }
 function createSquare2(){
-    const geometry = new THREE.BoxGeometry(1,1,1);
-    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+    //const textureUrl = "./images/rainbow.jpg";
+    //const texture = new THREE.TextureLoader().load(textureUrl);
+    //let material = new THREE.MeshPhongMaterial({map: texture});
+    const geometry = new THREE.RingGeometry(0.9,1,10);
+    const material = new THREE.MeshBasicMaterial({color: 0x33aa99});
     cube2 = new THREE.Mesh(geometry, material);
     squares.push(cube2);
     scene.add(cube2);
@@ -183,13 +186,13 @@ function animate()
     currentTime = now;
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
-    for(const cube of squares)
-        if(cube.position.z > 30)
-            createSquare2();
-        if(cube.position.z > 60)
-            cube.position.z = 10;
-        cube.position.z += 7*angle;
-        console.log(cube.position.z);
+    if(cube.position.z > 30)
+        createSquare2();
+    for(const ring of squares)
+        if(ring.position.z > 60)
+            ring.position.z = 10;
+        else
+            ring.position.z += 8*angle;
 }
 
 /**
