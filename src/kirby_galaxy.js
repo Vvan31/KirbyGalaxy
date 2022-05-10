@@ -14,6 +14,9 @@ let currentTime = Date.now();
 let squares = [];
 let cube;
 let cube2;
+let cube3;
+let snow;
+let box;
 //Ejemplos clase
 let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
 
@@ -26,7 +29,8 @@ function main()
     createScene(canvas);
     //Fondo 
     createSquare();
-
+    creataePowerUp()
+    createBox()
     //objeto
     const loader = new OBJLoader();
 
@@ -44,21 +48,54 @@ function main()
 }
 function createSquare(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
-    const material = new THREE.MeshBasicMaterial({color: 0x44aa});
+    const material = new THREE.MeshBasicMaterial({color: 0xd10fd1});
     cube = new THREE.Mesh(geometry, material);
     squares.push(cube);
     scene.add(cube);
 }
 function createSquare2(){
-    //const textureUrl = "./images/rainbow.jpg";
-    //const texture = new THREE.TextureLoader().load(textureUrl);
-    //let material = new THREE.MeshPhongMaterial({map: texture});
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0x33aa99});
     cube2 = new THREE.Mesh(geometry, material);
     squares.push(cube2);
     scene.add(cube2);
 }
+function createSquare3(){
+    const geometry = new THREE.RingGeometry(0.9,1,10);
+    const material = new THREE.MeshBasicMaterial({color: 0xe8f05d});
+    cube3 = new THREE.Mesh(geometry, material);
+    squares.push(cube3);
+    scene.add(cube3);
+}
+function creataePowerUp(){
+    const textureUrl = "../images/lemon.jpg";
+    const texture = new THREE.TextureLoader().load(textureUrl);
+    let Material = new THREE.MeshPhongMaterial({map: texture});
+    // Mercury dimentions 
+    let geometry = new THREE.SphereGeometry(0.3,32,32);
+    snow = new THREE.Mesh(geometry, Material);
+    snow.position.z = 30;
+    snow.position.x = -4;
+    snow.position.y = 4;
+    const light = new THREE.PointLight( 0xd4fffe, 1, 100 );
+    light.position.set( 30, -2, -1 );
+    scene.add( light );
+    scene.add(snow);
+}
+
+function createBox(){
+    const geometry = new THREE.ConeGeometry(1, 8, 9);
+    const textureUrl = "../images/cristal.jpg";
+    const texture = new THREE.TextureLoader().load(textureUrl);
+    let material = new THREE.MeshPhongMaterial({map: texture});
+    box = new THREE.Mesh(geometry, material);
+    box.rotation.x = Math.PI/1.89; 
+    box.position.z = 30;
+    box.position.x = 4;
+    box.position.y= 4;
+    scene.add(box);
+}
+
 function onError ( err ){ console.error( err ); };
 
 function onProgress( xhr ) 
@@ -160,10 +197,11 @@ async function loadObjMtl(objModelUrl, objectList)
         
         console.log(object);
 
-        object.position.y += -5;
-        object.scale.set(1.15, 1.15, 1.15);
+        object.position.y += -1;
+        object.scale.set(0.2, 0.2, 0.2);
         object.rotation.y = 600;
         object.rotation.x = -75;
+        object.position.z = 50;
 
         objectList.push(object);
         scene.add(object);
@@ -173,8 +211,6 @@ async function loadObjMtl(objModelUrl, objectList)
         onError(err);
     }
 }
-
-
 
 /**
  * Updates the rotation of the objects in the scene
@@ -186,13 +222,16 @@ function animate()
     currentTime = now;
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
-    if(cube.position.z > 30)
+
+    if(cube.position.z > 20 && squares.length<3)
         createSquare2();
+    if(cube.position.z > 40 && squares.length<4)
+        createSquare3();
     for(const ring of squares)
         if(ring.position.z > 60)
-            ring.position.z = 10;
+            ring.position.z = -10;
         else
-            ring.position.z += 8*angle;
+            ring.position.z += 26*angle;
 }
 
 /**
@@ -205,7 +244,7 @@ function update()
     // Render the scene
     renderer.render( scene, camera );
     //solarSystemGroup.rotation.y = 5;
-    controls.update();
+    //controls.update();
     // Spin the cube for next frame
     animate();
 }
@@ -235,8 +274,8 @@ function createScene(canvas)
     
     scene.add(camera);
     // Orbit controls 
-    controls = new OrbitControls( camera, renderer.domElement );
-    controls.update();
+    //controls = new OrbitControls( camera, renderer.domElement );
+    //controls.update();
     // This light globally illuminates all objects in the scene equally.
     // Cannot cast shadows
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
@@ -244,11 +283,9 @@ function createScene(canvas)
     
 
     //Obj kirbo
-    //loadObjMtl(kirbylUrl, objectList);
+    loadObjMtl(kirbylUrl, objectList);
 
  
-    // add mouse handling so we can rotate the scene
-    //addMouseHandler(canvas, solarSystemGroup);
 }
 
 main();
