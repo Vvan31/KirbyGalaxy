@@ -11,17 +11,22 @@ let renderer = null, scene = null, camera = null
 let controls = null;
 const duration = 5000; // ms
 let currentTime = Date.now();
-
-
+let squares = [];
+let cube;
+let cube2;
 //Ejemplos clase
 let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
 
 let kirbylUrl = {obj:'../models/obj/Kirbysentado.obj', mtl:'../models/obj/Kirbysentado.mtl'};
 let objectList = []
+
 function main() 
 {
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
+    //Fondo 
+    createSquare();
+
     //objeto
     const loader = new OBJLoader();
 
@@ -37,7 +42,20 @@ function main()
 
     update();
 }
-
+function createSquare(){
+    const geometry = new THREE.BoxGeometry(1,1,1);
+    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+    cube = new THREE.Mesh(geometry, material);
+    squares.push(cube);
+    scene.add(cube);
+}
+function createSquare2(){
+    const geometry = new THREE.BoxGeometry(1,1,1);
+    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+    cube2 = new THREE.Mesh(geometry, material);
+    squares.push(cube2);
+    scene.add(cube2);
+}
 function onError ( err ){ console.error( err ); };
 
 function onProgress( xhr ) 
@@ -49,7 +67,7 @@ function onProgress( xhr )
     }
 }
 
-async function loadJson(url, objectList)
+/* async function loadJson(url, objectList)
 {
     try 
     {
@@ -70,7 +88,7 @@ async function loadJson(url, objectList)
     {
         return onError(err);
     }
-}
+} */
 
 async function loadObj(objModelUrl, objectList)
 {
@@ -101,7 +119,7 @@ async function loadObj(objModelUrl, objectList)
         object.position.z = -1;
         object.position.x = -1.5;
         object.rotation.y = -3;
-        object.rotation.x = 50;
+        object.rotation.x = 3.1416;
         object.name = "objObject";
         
         objectList.push(object);
@@ -139,8 +157,10 @@ async function loadObjMtl(objModelUrl, objectList)
         
         console.log(object);
 
-        object.position.y += 1;
-        object.scale.set(0.15, 0.15, 0.15);
+        object.position.y += -5;
+        object.scale.set(1.15, 1.15, 1.15);
+        object.rotation.y = 600;
+        object.rotation.x = -75;
 
         objectList.push(object);
         scene.add(object);
@@ -163,6 +183,13 @@ function animate()
     currentTime = now;
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
+    for(const cube of squares)
+        if(cube.position.z > 30)
+            createSquare2();
+        if(cube.position.z > 60)
+            cube.position.z = 10;
+        cube.position.z += 7*angle;
+        console.log(cube.position.z);
 }
 
 /**
@@ -193,7 +220,12 @@ function createScene(canvas)
     // Create a new Three.js scene
     scene = new THREE.Scene();
     // Set the background color 
-    scene.background = new THREE.Color( 0.2, 0.2, 0.2 );
+    const loader = new THREE.TextureLoader();
+    loader.load('../images/nightskygalaxy.jpg' , function(texture)
+            {
+             scene.background = texture;  
+            });
+
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
     camera.position.z = 60;
@@ -204,12 +236,12 @@ function createScene(canvas)
     controls.update();
     // This light globally illuminates all objects in the scene equally.
     // Cannot cast shadows
-    const ambientLight = new THREE.AmbientLight(0xffccaa, 0.8);
+    const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
     scene.add(ambientLight);
     
 
     //Obj kirbo
-    loadObjMtl(kirbylUrl, objectList);
+    //loadObjMtl(kirbylUrl, objectList);
 
  
     // add mouse handling so we can rotate the scene
