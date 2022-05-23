@@ -28,9 +28,9 @@ function main()
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
     //Fondo 
-    createSquare();
-    creataePowerUp()
-    createBox()
+    createRing1();
+    createIceCream()
+    createCone()
     //objeto
     const loader = new OBJLoader();
 
@@ -46,32 +46,31 @@ function main()
 
     update();
 }
-function createSquare(){
+function createRing1(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xd10fd1});
     cube = new THREE.Mesh(geometry, material);
     squares.push(cube);
     scene.add(cube);
 }
-function createSquare2(){
+function createRing2(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0x33aa99});
     cube2 = new THREE.Mesh(geometry, material);
     squares.push(cube2);
     scene.add(cube2);
 }
-function createSquare3(){
+function createRing3(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xe8f05d});
     cube3 = new THREE.Mesh(geometry, material);
     squares.push(cube3);
     scene.add(cube3);
 }
-function creataePowerUp(){
+function createIceCream(){ //sphere with ice cream texture, it's the power up
     const textureUrl = "../images/lemon.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
     let Material = new THREE.MeshPhongMaterial({map: texture});
-    // Mercury dimentions 
     let geometry = new THREE.SphereGeometry(0.3,32,32);
     snow = new THREE.Mesh(geometry, Material);
     snow.position.z = 30;
@@ -83,7 +82,7 @@ function creataePowerUp(){
     scene.add(snow);
 }
 
-function createBox(){
+function createCone(){ //Cone with crital texture, similar to a bullet, this is the obstacle
     const geometry = new THREE.ConeGeometry(1, 8, 9);
     const textureUrl = "../images/cristal.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
@@ -107,7 +106,7 @@ function onProgress( xhr )
     }
 }
 
-/* async function loadJson(url, objectList)
+async function loadJson(url, objectList)
 {
     try 
     {
@@ -128,7 +127,7 @@ function onProgress( xhr )
     {
         return onError(err);
     }
-} */
+} 
 
 async function loadObj(objModelUrl, objectList)
 {
@@ -224,9 +223,9 @@ function animate()
     const angle = Math.PI * 2 * fract;
 
     if(cube.position.z > 20 && squares.length<3)
-        createSquare2();
+        createRing2();
     if(cube.position.z > 40 && squares.length<4)
-        createSquare3();
+        createRing3();
     for(const ring of squares)
         if(ring.position.z > 60)
             ring.position.z = -10;
