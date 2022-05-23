@@ -5,9 +5,10 @@ import {addMouseHandler} from "../libs/sceneHandlers.js"
 import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
 import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
 import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
+import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
 
 
-let renderer = null, scene = null, camera = null
+let renderer = null, scene = null, camera = null, object = null
 let controls = null;
 const duration = 5000; // ms
 let currentTime = Date.now();
@@ -28,13 +29,14 @@ function main()
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
     //Fondo 
-    createRing1();
+    loadGLTF('../models/obj/Kirby.glb')
+    createRing1()
     createIceCream()
     createCone()
     //objeto
-    const loader = new OBJLoader();
+    /*const loader = new GLTFLoader();
 
-    loader.load( '../models/obj/Kirby.obj', function ( glb ) {
+    loader.load( '../models/obj/Kirby.glb', function ( glb ) {
 
         scene.add( glb.scene );
 
@@ -42,7 +44,7 @@ function main()
 
         console.error( error );
 
-    } );
+    } );*/
 
     update();
 }
@@ -103,6 +105,39 @@ function onProgress( xhr )
 
         const percentComplete = xhr.loaded / xhr.total * 100;
         console.log( xhr.target.responseURL, Math.round( percentComplete, 2 ) + '% downloaded' );
+    }
+}
+
+async function loadGLTF(gltfModelUrl)
+{
+    try
+    {
+        const gltfLoader = new GLTFLoader();
+
+        const result = await gltfLoader.loadAsync(gltfModelUrl);
+
+        object = result.scene.children[0] || result.scenes[0]
+
+        object.traverse(model =>{
+            if(model.isMesh){
+
+            }         
+        });
+
+
+        /*soldier.rotation.z = Math.PI
+        soldier.position.y = -4*/
+        object.position.z = 9
+        scene.add(object)
+
+        
+
+        
+             
+    }
+    catch(err)
+    {
+        console.error(err);
     }
 }
 
@@ -282,7 +317,8 @@ function createScene(canvas)
     
 
     //Obj kirbo
-    loadObjMtl(kirbylUrl, objectList);
+    //loadObjMtl(kirbylUrl, objectList);
+    
 
  
 }
