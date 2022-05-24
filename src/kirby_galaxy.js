@@ -20,7 +20,7 @@ let box;
 //Ejemplos clase
 let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
 
-let kirbylUrl = {obj:'../models/obj/Kirbysentado.obj', mtl:'../models/obj/Kirbysentado.mtl'};
+let kirbylUrl = {obj:'../models/obj/Kirby/source/Kirby1.obj', mtl:'../models/obj/Kirby/source/Kirby1.mtl'};
 let objectList = []
 
 function main() 
@@ -197,7 +197,7 @@ async function loadObjMtl(objModelUrl, objectList)
         console.log(object);
 
         object.position.y += -1;
-        object.scale.set(0.2, 0.2, 0.2);
+        object.scale.set(0.1, 0.1, 0.1);
         object.rotation.y = 600;
         object.rotation.x = -75;
         object.position.z = 50;
