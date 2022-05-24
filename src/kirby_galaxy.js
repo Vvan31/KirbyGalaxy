@@ -32,17 +32,17 @@ function main()
     createIceCream()
     createCone()
     //objeto
-    const loader = new OBJLoader();
+    /*const loader = new OBJLoader();
 
-    loader.load( '../models/obj/Kirby.obj', function ( glb ) {
+    loader.load( '../models/obj/Kirby/source/Kirby1.obj', function ( glb ) {
 
-        scene.add( glb.scene );
+        scene.add( glb );
 
     }, undefined, function ( error ) {
 
         console.error( error );
 
-    } );
+    } );*/
 
     update();
 }
@@ -117,6 +117,7 @@ async function loadJson(url, objectList)
 
         object.position.y = -1;
         object.position.x = 1.5;
+        object.rotation.z = Math.PI
 
         object.name = "jsonObject";
 
