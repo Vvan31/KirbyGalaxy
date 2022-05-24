@@ -120,7 +120,7 @@ async function loadGLTF(gltfModelUrl)
 
         object.traverse(model =>{
             if(model.isMesh){
-
+                console.log('it mesh')
             }         
         });
 
@@ -128,6 +128,7 @@ async function loadGLTF(gltfModelUrl)
         /*soldier.rotation.z = Math.PI
         soldier.position.y = -4*/
         object.position.z = 9
+        object.rotation.z = Math.PI
         scene.add(object)
 
         
