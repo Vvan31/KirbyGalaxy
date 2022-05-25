@@ -116,7 +116,7 @@ async function loadGLTF(gltfModelUrl)
 
         const result = await gltfLoader.loadAsync(gltfModelUrl);
 
-        object = result.scene.children[0]
+        object = result.scene || result.scenes[0]
 
         object.traverse(model =>{
             if(model.isMesh){
@@ -129,6 +129,7 @@ async function loadGLTF(gltfModelUrl)
         object.position.y = 0;
         object.scale.set(0.1, 0.1, 0.1);
         object.position.z = 50;
+        object.rotation.z = Math.PI;
 
         scene.add(object)
         
