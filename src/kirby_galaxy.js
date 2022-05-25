@@ -60,7 +60,8 @@ async function loadGLTF(gltfModelUrl)
         object.rotation.y = Math.PI;
         object.rotation.y = 600;
         object.rotation.x = -75;
-        
+        object.rotation.x  = Math.PI;
+
         object.position.z = 50;
         scene.add(object); 
         console.log(object); 
