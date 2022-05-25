@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -5,26 +6,33 @@
 
 		<link rel="stylesheet" href="../css/main.css" />
 		<link rel="stylesheet" href="../css/threejsscene.css" />
-
+		<link rel="stylesheet" href="mainPageCSS.css">
 		<script type="module" defer src="kirby_galaxy.js"></script>
-
 	</head>
-	<body> 
-		<div id="title">
-			<h2>Kirby</h2>
-		</div>
 
-		<div id="container">
-			<canvas id="webglcanvas" width=800 height=600></canvas>
-		</div>
+	<body> 
 		
-		<div id="credits">
-			<p>Created by:</p>
-			<p>Viviana Osorio Nieto</p>
-			<p>Pablo Garcia Morales</p>
-			<p>Eduardo R. Muller R</p>
+		<div id="all"> 
+			<div id="title">
+				<h2>Kirby</h2>
+			</div>
+
+			<div id="container">
+				<section class="wrapper">
+					<div id="stars"></div>
+					<div id="stars2"></div>
+					<div id="stars3"></div>
+				</section>
+				<canvas id="webglcanvas" width=800 height=600></canvas>
+			</div>
+			
+			<div id="credits">
+				<p>Created by:</p>
+				<p>Viviana Osorio Nieto</p>
+				<p>Pablo Garcia Morales</p>
+				<p>Eduardo R. Muller R</p>
+			</div>
 		</div>
-		
 	</body>
 
 </html>
