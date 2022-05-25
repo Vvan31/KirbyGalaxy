@@ -6,6 +6,7 @@ import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
 import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
 import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
 import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
+//import {DragControls} from '../libs/three.js/controls/DragControls.js';
 
 let renderer = null, scene = null, camera = null
 let controls = null;
@@ -31,6 +32,7 @@ function main()
     createRing1();
     createIceCream()
     createCone()
+    
     //objeto
     /*const loader = new OBJLoader();
 
@@ -64,7 +66,21 @@ async function loadGLTF(gltfModelUrl)
 
         object.position.z = 50;
         scene.add(object); 
-        console.log(object); 
+        console.log(object);
+        
+        document.onkeydown =function (e){
+            if(e.keyCode == 37){
+                object.position.x -= 1;
+            }else if(e.keyCode == 39){
+                object.position.x += 1;
+            }
+            else if(e.keyCode == 38){
+                object.position.y += 1;
+            }
+            else if(e.keyCode == 40){
+                object.position.y -= 1;
+            }
+        }
              
     }
     catch(err)
@@ -273,6 +289,7 @@ function update()
     //controls.update();
     // Spin the cube for next frame
     animate();
+    
 }
 
 /**
