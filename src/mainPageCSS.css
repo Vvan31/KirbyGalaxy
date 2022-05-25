@@ -5,30 +5,25 @@ html {
 
 #title {
     position: relative;
-    top: 10%;
-    right: 0;
+    display: block;
+    margin-left: -130px;
 }
 
 #kirbyimg{
-    position: absolute;
-    top: 65%;
-    left: 45%;
-    right: 0;
+    position: relative;
+    display: block;
+    margin-left: 110px;
+    margin-top: 50px;
 }
 
 /* menu options */
 #alloptions{
     width:0px;
-    border-left: 300px solid transparent;
-    border-right:600px solid transparent;
-    border-top: 300px solid transparent;
-    border-radius: px;
+    top: 10%;
+    right: 10%;
     position:relative;
     margin:auto;
-    top:5px;
-    left:2px;
 }
-
 
 .menu_option1{
     position: relative;
@@ -52,7 +47,6 @@ html {
     position: relative;
     display: block;
     margin: auto;
-    padding-left: 6820%;
 }
 
 .menu_option2 .img-top2{
@@ -66,7 +60,6 @@ html {
 .menu_option2:hover .img-top2{
     display: inline;
 }
-
 
 #stars {
     width: 1px;
@@ -623,7 +616,6 @@ html {
     494px 1957px #fff, 1296px 431px #fff, 175px 1507px #fff, 831px 121px #fff,
     498px 1947px #fff, 617px 880px #fff, 240px 403px #fff;
 }
-
 
 @keyframes animStar {
     from {
