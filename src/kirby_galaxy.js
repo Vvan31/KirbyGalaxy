@@ -6,9 +6,9 @@ import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
 import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
 import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
 import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
+//import {DragControls} from '../libs/three.js/controls/DragControls.js';
 
-
-let renderer = null, scene = null, camera = null, object = null, orbitControls = null
+let renderer = null, scene = null, camera = null
 let controls = null;
 const duration = 5000; // ms
 let currentTime = Date.now();
@@ -21,7 +21,7 @@ let box;
 //Ejemplos clase
 let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
 
-let kirbylUrl = {obj:'../models/obj/Kirbysentado.obj', mtl:'../models/obj/Kirbysentado.mtl'};
+let kirbylUrl = {obj:'../models/obj/Kirby/source/Kirby1.obj', mtl:'../models/obj/Kirby/source/Kirby1.mtl'};
 let objectList = []
 
 function main() 
@@ -29,16 +29,16 @@ function main()
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
     //Fondo 
-    loadGLTF('../models/obj/Kirby.glb')
-    createRing1()
+    createRing1();
     createIceCream()
     createCone()
+    
     //objeto
-    /*const loader = new GLTFLoader();
+    /*const loader = new OBJLoader();
 
-    loader.load( '../models/obj/Kirby.glb', function ( glb ) {
+    loader.load( '../models/obj/Kirby/source/Kirby1.obj', function ( glb ) {
 
-        scene.add( glb.scene );
+        scene.add( glb );
 
     }, undefined, function ( error ) {
 
@@ -47,6 +47,46 @@ function main()
     } );*/
 
     update();
+}
+async function loadGLTF(gltfModelUrl)
+{
+    try
+    {
+        const gltfLoader = new GLTFLoader();
+
+        const result = await gltfLoader.loadAsync(gltfModelUrl);
+
+        const object = result.scene || result.scenes[0];
+
+        object.scale.set(0.1,0.1,0.1);
+        object.rotation.y = Math.PI;
+        object.rotation.y = 600;
+        object.rotation.x = -75;
+        object.rotation.x  = Math.PI;
+
+        object.position.z = 50;
+        scene.add(object); 
+        console.log(object);
+        
+        document.onkeydown =function (e){
+            if(e.keyCode == 37){
+                object.position.x -= 1;
+            }else if(e.keyCode == 39){
+                object.position.x += 1;
+            }
+            else if(e.keyCode == 38){
+                object.position.y += 1;
+            }
+            else if(e.keyCode == 40){
+                object.position.y -= 1;
+            }
+        }
+             
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
 }
 function createRing1(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
@@ -108,40 +148,109 @@ function onProgress( xhr )
     }
 }
 
-async function loadGLTF(gltfModelUrl)
+async function loadJson(url, objectList)
+{
+    try 
+    {
+        const object = await new THREE.ObjectLoader().loadAsync(url, onProgress, onError);
+
+        object.castShadow = true;
+        object.receiveShadow = false;
+
+        object.position.y = -1;
+        object.position.x = 1.5;
+        object.rotation.z = Math.PI
+
+        object.name = "jsonObject";
+
+        objectList.push(object);
+        scene.add(object);
+    }
+    catch (err) 
+    {
+        return onError(err);
+    }
+} 
+
+async function loadObj(objModelUrl, objectList)
 {
     try
     {
-        const gltfLoader = new GLTFLoader();
+        const object = await new OBJLoader().loadAsync(objModelUrl.obj, onProgress, onError);
 
-        const result = await gltfLoader.loadAsync(gltfModelUrl);
+        let texture = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.map) : null;
+        let normalMap = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.normalMap) : null;
+        let specularMap = objModelUrl.hasOwnProperty('specularMap') ? new THREE.TextureLoader().load(objModelUrl.specularMap) : null;
 
-        object = result.scene || result.scenes[0]
-
-        object.traverse(model =>{
-            if(model.isMesh){
-                model.castShadow = true
-                model.receiveShadow = true
-                console.log('it mesh')
-            }         
-        });
-
-        object.position.y = -1;
-        //object.rotation.y = Math.PI;
-        object.rotation.x = Math.PI;
-        object.scale.set(0.1, 0.1, 0.1);
-        object.position.z = 50;
-        object.rotation.z = Math.PI;
-
-        scene.add(object)
+        console.log(object);
         
+        // object.traverse(function (child) 
+        // {
+            for(const child of object.children)
+            {
+                //     if (child.isMesh)
+                child.castShadow = true;
+                child.receiveShadow = true;
+                child.material.map = texture;
+                child.material.normalMap = normalMap;
+                child.material.specularMap = specularMap;
+            }
+        // });
 
+        object.scale.set(10, 10, 10);
+        object.position.z = -1;
+        object.position.x = -1.5;
+        object.rotation.y = -3;
+        object.rotation.x = 3.1416;
+        object.name = "objObject";
         
-             
+        objectList.push(object);
+        scene.add(object);
     }
-    catch(err)
+    catch (err) 
     {
-        console.error(err);
+        onError(err);
+    }
+}
+
+async function loadObjMtl(objModelUrl, objectList)
+{
+    try
+    {
+        const mtlLoader = new MTLLoader();
+
+        const materials = await mtlLoader.loadAsync(objModelUrl.mtl, onProgress, onError);
+
+        materials.preload();
+        
+        const objLoader = new OBJLoader();
+
+        objLoader.setMaterials(materials);
+
+        const object = await objLoader.loadAsync(objModelUrl.obj, onProgress, onError);
+    
+        object.traverse(function (child) {
+            if (child.isMesh)
+            {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        
+        console.log(object);
+
+        object.position.y += -1;
+        object.scale.set(0.1, 0.1, 0.1);
+        object.rotation.y = 600;
+        object.rotation.x = -75;
+        object.position.z = 50;
+
+        objectList.push(object);
+        scene.add(object);
+    }
+    catch (err)
+    {
+        onError(err);
     }
 }
 
@@ -180,8 +289,7 @@ function update()
     //controls.update();
     // Spin the cube for next frame
     animate();
-
-    //orbitControls.update()
+    
 }
 
 /**
@@ -198,35 +306,30 @@ function createScene(canvas)
     scene = new THREE.Scene();
     // Set the background color 
     const loader = new THREE.TextureLoader();
-   /*  loader.load('../images/nightskygalaxy.jpg' , function(texture)
+    loader.load('../images/nightskygalaxy.jpg' , function(texture)
             {
              scene.background = texture;  
-            }); */
+            });
 
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
     camera.position.z = 60;
-
-    //orbitControls = new OrbitControls(camera, renderer.domElement);
     
     scene.add(camera);
     // Orbit controls 
-    //controls = new OrbitControls( camera, renderer.domElement );
-    //controls.update();
+    controls = new OrbitControls( camera, renderer.domElement );
+    controls.update();
     // This light globally illuminates all objects in the scene equally.
     // Cannot cast shadows
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
     scene.add(ambientLight);
-    
+    loadGLTF('../models/obj/Kirby.glb');
 
     //Obj kirbo
     //loadObjMtl(kirbylUrl, objectList);
-    //loadGLTF('..\models\obj\Kirby.glb')
-    
 
  
 }
-
 
 function resize()
 {
