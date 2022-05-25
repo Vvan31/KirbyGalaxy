@@ -126,7 +126,9 @@ async function loadGLTF(gltfModelUrl)
             }         
         });
 
-        object.position.y = 0;
+        object.position.y = -1;
+        //object.rotation.y = Math.PI;
+        object.rotation.x = Math.PI;
         object.scale.set(0.1, 0.1, 0.1);
         object.position.z = 50;
         object.rotation.z = Math.PI;
