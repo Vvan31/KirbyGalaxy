@@ -199,11 +199,11 @@ function createScene(canvas)
     // Create a new Three.js scene
     scene = new THREE.Scene();
     // Set the background color 
-    const loader = new THREE.TextureLoader();
+    /*const loader = new THREE.TextureLoader();
     loader.load('../images/nightskygalaxy.jpg' , function(texture)
             {
              scene.background = texture;  
-            });
+            });*/
 
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
@@ -211,8 +211,8 @@ function createScene(canvas)
     
     scene.add(camera);
     // Orbit controls 
-    controls = new OrbitControls( camera, renderer.domElement );
-    controls.update();
+    //controls = new OrbitControls( camera, renderer.domElement );
+    //controls.update();
     // This light globally illuminates all objects in the scene equally.
     // Cannot cast shadows
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
