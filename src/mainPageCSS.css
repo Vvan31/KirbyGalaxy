@@ -3,17 +3,17 @@ html {
     background: radial-gradient(ellipse at bottom, #1b2735 0%,#090a0f 100%);
 }
 
-#title {
+.title {
     position: relative;
     display: block;
-    margin-left: -130px;
+    margin-left: auto;
 }
 
-#kirbyimg{
+.kirbyimg{
     position: relative;
     display: block;
     margin-left: 110px;
-    margin-top: 50px;
+    margin-top: auto;
 }
 
 /* menu options */
