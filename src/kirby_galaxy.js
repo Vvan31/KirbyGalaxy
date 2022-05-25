@@ -58,13 +58,12 @@ async function loadGLTF(gltfModelUrl)
 
         const object = result.scene || result.scenes[0];
 
-        object.scale.set(0.1,0.1,0.1);
-        object.rotation.y = Math.PI;
-        object.rotation.y = 600;
-        object.rotation.x = -75;
-        object.rotation.x  = Math.PI;
-
+        object.position.y = -1;
+        //object.rotation.y = Math.PI;
+        object.rotation.x = Math.PI;
+        object.scale.set(0.1, 0.1, 0.1);
         object.position.z = 50;
+        object.rotation.z = Math.PI;
         scene.add(object); 
         console.log(object);
         
@@ -148,111 +147,6 @@ function onProgress( xhr )
     }
 }
 
-async function loadJson(url, objectList)
-{
-    try 
-    {
-        const object = await new THREE.ObjectLoader().loadAsync(url, onProgress, onError);
-
-        object.castShadow = true;
-        object.receiveShadow = false;
-
-        object.position.y = -1;
-        object.position.x = 1.5;
-        object.rotation.z = Math.PI
-
-        object.name = "jsonObject";
-
-        objectList.push(object);
-        scene.add(object);
-    }
-    catch (err) 
-    {
-        return onError(err);
-    }
-} 
-
-async function loadObj(objModelUrl, objectList)
-{
-    try
-    {
-        const object = await new OBJLoader().loadAsync(objModelUrl.obj, onProgress, onError);
-
-        let texture = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.map) : null;
-        let normalMap = objModelUrl.hasOwnProperty('normalMap') ? new THREE.TextureLoader().load(objModelUrl.normalMap) : null;
-        let specularMap = objModelUrl.hasOwnProperty('specularMap') ? new THREE.TextureLoader().load(objModelUrl.specularMap) : null;
-
-        console.log(object);
-        
-        // object.traverse(function (child) 
-        // {
-            for(const child of object.children)
-            {
-                //     if (child.isMesh)
-                child.castShadow = true;
-                child.receiveShadow = true;
-                child.material.map = texture;
-                child.material.normalMap = normalMap;
-                child.material.specularMap = specularMap;
-            }
-        // });
-
-        object.scale.set(10, 10, 10);
-        object.position.z = -1;
-        object.position.x = -1.5;
-        object.rotation.y = -3;
-        object.rotation.x = 3.1416;
-        object.name = "objObject";
-        
-        objectList.push(object);
-        scene.add(object);
-    }
-    catch (err) 
-    {
-        onError(err);
-    }
-}
-
-async function loadObjMtl(objModelUrl, objectList)
-{
-    try
-    {
-        const mtlLoader = new MTLLoader();
-
-        const materials = await mtlLoader.loadAsync(objModelUrl.mtl, onProgress, onError);
-
-        materials.preload();
-        
-        const objLoader = new OBJLoader();
-
-        objLoader.setMaterials(materials);
-
-        const object = await objLoader.loadAsync(objModelUrl.obj, onProgress, onError);
-    
-        object.traverse(function (child) {
-            if (child.isMesh)
-            {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        
-        console.log(object);
-
-        object.position.y += -1;
-        object.scale.set(0.1, 0.1, 0.1);
-        object.rotation.y = 600;
-        object.rotation.x = -75;
-        object.position.z = 50;
-
-        objectList.push(object);
-        scene.add(object);
-    }
-    catch (err)
-    {
-        onError(err);
-    }
-}
 
 /**
  * Updates the rotation of the objects in the scene
