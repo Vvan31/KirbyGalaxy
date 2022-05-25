@@ -5,7 +5,7 @@ import {addMouseHandler} from "../libs/sceneHandlers.js"
 import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
 import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
 import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
-
+import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
 
 let renderer = null, scene = null, camera = null
 let controls = null;
@@ -45,6 +45,31 @@ function main()
     } );*/
 
     update();
+}
+async function loadGLTF(gltfModelUrl)
+{
+    try
+    {
+        const gltfLoader = new GLTFLoader();
+
+        const result = await gltfLoader.loadAsync(gltfModelUrl);
+
+        const object = result.scene || result.scenes[0];
+
+        object.scale.set(0.1,0.1,0.1);
+        object.rotation.y = Math.PI;
+        object.rotation.y = 600;
+        object.rotation.x = -75;
+        
+        object.position.z = 50;
+        scene.add(object); 
+        console.log(object); 
+             
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
 }
 function createRing1(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
@@ -274,16 +299,16 @@ function createScene(canvas)
     
     scene.add(camera);
     // Orbit controls 
-    //controls = new OrbitControls( camera, renderer.domElement );
-    //controls.update();
+    controls = new OrbitControls( camera, renderer.domElement );
+    controls.update();
     // This light globally illuminates all objects in the scene equally.
     // Cannot cast shadows
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
     scene.add(ambientLight);
-    
+    loadGLTF('../models/obj/Kirby.glb');
 
     //Obj kirbo
-    loadObjMtl(kirbylUrl, objectList);
+    //loadObjMtl(kirbylUrl, objectList);
 
  
 }
