@@ -6,29 +6,29 @@ html {
 #title {
     position: relative;
     display: block;
-    margin-left: -130px;
+    margin: auto;
 }
 
 #kirbyimg{
     position: relative;
     display: block;
-    margin-left: 110px;
-    margin-top: 50px;
+    margin: auto;
+    margin-top: 10%;
 }
 
 /* menu options */
 #alloptions{
-    width:0px;
     top: 10%;
-    right: 10%;
     position:relative;
+    display: block;
     margin:auto;
 }
 
 .menu_option1{
     position: relative;
-    display: inline-block;
+    display: block;
     margin: 50px;
+    margin-left: 35%;
 }
 
 .menu_option1 .img-top1{
@@ -47,6 +47,7 @@ html {
     position: relative;
     display: block;
     margin: auto;
+    margin-left: 28%;
 }
 
 .menu_option2 .img-top2{

@@ -181,7 +181,7 @@ function update()
     // Spin the cube for next frame
     animate();
 
-    orbitControls.update()
+    //orbitControls.update()
 }
 
 /**
@@ -198,16 +198,16 @@ function createScene(canvas)
     scene = new THREE.Scene();
     // Set the background color 
     const loader = new THREE.TextureLoader();
-    loader.load('../images/nightskygalaxy.jpg' , function(texture)
+   /*  loader.load('../images/nightskygalaxy.jpg' , function(texture)
             {
              scene.background = texture;  
-            });
+            }); */
 
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
     camera.position.z = 60;
 
-    orbitControls = new OrbitControls(camera, renderer.domElement);
+    //orbitControls = new OrbitControls(camera, renderer.domElement);
     
     scene.add(camera);
     // Orbit controls 
@@ -227,4 +227,23 @@ function createScene(canvas)
  
 }
 
-main();
+
+function resize()
+{
+    const canvas = document.getElementById("webglcanvas");
+
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+
+    camera.aspect = canvas.width / canvas.height;
+
+    camera.updateProjectionMatrix();
+    renderer.setSize(canvas.width, canvas.height);
+}
+
+window.onload = () => {
+    main();
+    resize(); 
+};
+
+window.addEventListener('resize', resize, false);
