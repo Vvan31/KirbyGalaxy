@@ -2,6 +2,10 @@ html {
     height: 100%;
     background: radial-gradient(ellipse at bottom, #1b2735 0%,#090a0f 100%);
 }
+body {
+    overflow: hidden;
+  }
+  
 
 #title {
     position: relative;
@@ -22,6 +26,9 @@ html {
     position:relative;
     display: block;
     margin:auto;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .menu_option1{
@@ -62,6 +69,126 @@ html {
     display: inline;
 }
 
+
+/*****************************
+   CREDITS OVERLAY NAVIGATION
+   DE: https://codepen.io/whatthephuc/pen/XYpLWW 
+*****************************/
+/*ul*/.nav {
+    /* set ul */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* BURGER */
+.burger__input {
+    display: none; /*Que no se vea el checkbox*/
+}
+
+.burger__label {
+    /* put Burger on top of navigation*/
+    display: none; /* if you don't want to show this for a desktop version */
+    position: relative;
+    z-index: 11000;
+}
+
+/* optionally put this in a media query from here on */
+.burger__label {
+    display: block;
+}
+
+.nav__container {
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-Y: auto;
+    background-image: url('../images/kirbyBackGrnd.jpg');
+    
+    /* hide nav by moving up instead of display:none; */
+    transform: translateY(-100%);
+    
+    /* delay hiding of nav by transtition time */
+    transition: transform 0s var(--transition-time) var(--transition);
+}
+
+/*ul*/.nav {
+
+     /* vertical center navigation*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* fill the viewport */
+    min-height: 100%;
+
+    /* animation settings */
+    opacity: 1;
+    transform: var(--transition-scale);
+    transition: 
+        opacity var(--transition-time) var(--transition),
+        transform var(--transition-time) var(--transition)
+    ;
+}
+
+/*****************************
+    NAV VISIBLE
+*****************************/
+/* bring navigation back to viewport */
+.burger__input:checked ~ .nav__container {
+    transform: translateY(0);
+    transition: transform 0s;
+}
+
+/* how the nav looks like when opened */
+.burger__input:checked ~ .nav__container .nav {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* change font awesome icon to times symbol */
+.burger__input:checked ~ .burger__label i:before {
+    content: '\f00d';
+}
+
+
+
+/*****************************
+    CUSTOM STYLING
+*****************************/
+/*ul*/.nav {
+    background-color: var(--nav-background);
+    padding-top: var(--gutter);
+    padding-bottom: var(--gutter);
+}
+    
+* {
+    box-sizing: border-box;    
+}
+
+
+/* NAV ITEMS */
+/*a*/.nav__link {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5em;
+}
+
+/*a*/.nav__link:hover,
+/*a*/.nav__link:active,
+/*a*/.nav__link:focus {
+    color: var(--color-1);
+}
+
+
+
+
+
+/*animacion de estellas*/
 #stars {
     width: 1px;
     height: 1px;
