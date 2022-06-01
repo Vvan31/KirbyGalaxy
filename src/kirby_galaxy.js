@@ -171,10 +171,9 @@ function update()
     requestAnimationFrame(function() { update(); });
     
     // Render the scene
-    renderer.render( scene, camera );
-    //solarSystemGroup.rotation.y = 5;
+    renderer.render(scene, camera);
     //controls.update();
-    // Spin the cube for next frame
+
     animate();
     
 }
@@ -206,8 +205,6 @@ function createScene(canvas)
     // Orbit controls 
     //controls = new OrbitControls( camera, renderer.domElement );
     //controls.update();
-    // This light globally illuminates all objects in the scene equally.
-    // Cannot cast shadows
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
     scene.add(ambientLight);
     loadGLTF('../models/obj/Kirby.glb');
