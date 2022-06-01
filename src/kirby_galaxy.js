@@ -28,24 +28,9 @@ function main()
 {
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
-    //Fondo 
     createRing1();
     createIceCream()
     createCone()
-    
-    //objeto
-    /*const loader = new OBJLoader();
-
-    loader.load( '../models/obj/Kirby/source/Kirby1.obj', function ( glb ) {
-
-        scene.add( glb );
-
-    }, undefined, function ( error ) {
-
-        console.error( error );
-
-    } );*/
-
     update();
 }
 async function loadGLTF(gltfModelUrl)
@@ -69,15 +54,23 @@ async function loadGLTF(gltfModelUrl)
         
         document.onkeydown =function (e){
             if(e.keyCode == 37){
-                object.position.x -= 1;
+                if(object.position.x > -4)
+                    object.position.x -= 1;
+                    console.log("Movimiento Izquierda " + object.position.x)
             }else if(e.keyCode == 39){
-                object.position.x += 1;
+                if(object.position.x < 4)
+                    object.position.x += 1;
+                    console.log("Movimiento Derecha " + object.position.x)
             }
             else if(e.keyCode == 38){
-                object.position.y += 1;
+                if(object.position.y < 3)
+                    object.position.y += 1;
+                    console.log("Movimiento Arriba " + object.position.y)
             }
             else if(e.keyCode == 40){
-                object.position.y -= 1;
+                if(object.position.y > -3)
+                    object.position.y -= 1;
+                    console.log("Movimiento Abajo " + object.position.y)
             }
         }
              
