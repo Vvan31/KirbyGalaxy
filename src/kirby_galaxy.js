@@ -23,6 +23,10 @@ let boxBBox;
 let kirbysBBox;
 let kirby_obj;
 
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
+
 
 function main() 
 {
@@ -136,8 +140,8 @@ function createCone(){
     //----Position and Rotation of the cone
     cone.rotation.x = Math.PI/1.89; 
     cone.position.z = 10;
-    cone.position.x = 4;
-    cone.position.y= 4;
+    cone.position.x = randomInt(-4, 4);
+    cone.position.y= randomInt(-4, 4);
     
     //------Hitbox
     boxBBox =  new THREE.BoxHelper(cone, 0x00ff00);
@@ -189,6 +193,15 @@ function animate()
             createCone()
         }
     }*/
+
+    for (const bullet of arrBullets){
+        bullet.position.z += 1
+        if(bullet.position.z > 51){
+            scene.remove(bullet)
+            arrBullets.pop(bullet)
+            createCone()
+        }
+    }
 }
 
 /**
