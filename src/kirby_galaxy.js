@@ -6,14 +6,18 @@ import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
 let renderer = null, scene = null, camera = null
 const duration = 5000; // ms
 let currentTime = Date.now();
-let squares = [];
-let cube;
-let cube2;
-let cube3;
+let rings = [];
+let ring;
+let ring2;
+let ring3;
+
+let coneCounter = 0;
+
+let arrBullets = [];
 
 let snow;
 
-let box;
+let cone;
 let boxBBox;
 
 let kirbysBBox;
@@ -81,23 +85,23 @@ async function loadGLTF(gltfModelUrl)
 function createRing1(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xd10fd1});
-    cube = new THREE.Mesh(geometry, material);
-    squares.push(cube);
-    scene.add(cube);
+    ring = new THREE.Mesh(geometry, material);
+    rings.push(ring);
+    scene.add(ring);
 }
 function createRing2(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0x33aa99});
-    cube2 = new THREE.Mesh(geometry, material);
-    squares.push(cube2);
-    scene.add(cube2);
+    ring2 = new THREE.Mesh(geometry, material);
+    rings.push(ring2);
+    scene.add(ring2);
 }
 function createRing3(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xe8f05d});
-    cube3 = new THREE.Mesh(geometry, material);
-    squares.push(cube3);
-    scene.add(cube3);
+    ring3 = new THREE.Mesh(geometry, material);
+    rings.push(ring3);
+    scene.add(ring3);
 }
 
 //sphere with ice cream texture, it's the power up
@@ -122,18 +126,27 @@ function createCone(){
     const textureUrl = "../images/cristal.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
     let material = new THREE.MeshPhongMaterial({map: texture});
-    box = new THREE.Mesh(geometry, material);
-    box.rotation.x = Math.PI/1.89; 
-    box.position.z = 30;
-    box.position.x = 4;
-    box.position.y= 4;
+    cone = new THREE.Mesh(geometry, material);
     
-    //Hitbox
-    boxBBox =  new THREE.BoxHelper(box, 0x00ff00);
+    //----ID Cone
+    cone.name = 'Cone number' + coneCounter
+    coneCounter += 1
+
+    
+    //----Position and Rotation of the cone
+    cone.rotation.x = Math.PI/1.89; 
+    cone.position.z = 10;
+    cone.position.x = 4;
+    cone.position.y= 4;
+    
+    //------Hitbox
+    boxBBox =  new THREE.BoxHelper(cone, 0x00ff00);
     boxBBox.update();
     boxBBox.visible = true; 
 
-    scene.add(box);
+    arrBullets.push(cone)
+
+    scene.add(cone);
     scene.add(boxBBox);
 
 }
@@ -160,15 +173,22 @@ function animate()
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
 
-    if(cube.position.z > 20 && squares.length<3)
+    if(ring.position.z > 20 && rings.length<3)
         createRing2();
-    if(cube.position.z > 40 && squares.length<4)
+    if(ring.position.z > 40 && rings.length<4)
         createRing3();
-    for(const ring of squares)
+    for(const ring of rings)
         if(ring.position.z > 60)
             ring.position.z = -10;
         else
             ring.position.z += 26*angle;
+    
+    /*for(const bullet of arrBullets){
+        bullet.position.z += 1
+        if(bullet.position.z > 4){
+            createCone()
+        }
+    }*/
 }
 
 /**
@@ -185,7 +205,7 @@ function update()
     //Update hitbox  
     kirbysBBox.update();
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
-    const boxBox = new THREE.Box3().setFromObject(box);
+    const boxBox = new THREE.Box3().setFromObject(cone);
 
     boxBox.material = boxBox.intersectsBox(kirbyBox) 
         ? materials.colliding 
