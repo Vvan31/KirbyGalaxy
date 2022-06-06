@@ -126,7 +126,7 @@ function createIceCream(){
 
 //Cone with crital texture, similar to a bullet, this is the obstacle
 function createCone(){ 
-    const geometry = new THREE.ConeGeometry(1, 8, 9);
+    const geometry = new THREE.ConeGeometry(0.4, 4, 9);
     const textureUrl = "../images/cristal.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
     let material = new THREE.MeshPhongMaterial({map: texture});
