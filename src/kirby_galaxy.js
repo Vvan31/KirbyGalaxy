@@ -1,36 +1,32 @@
 "use strict"; 
 
 import * as THREE from "../libs/three.js/three.module.js"
-import {addMouseHandler} from "../libs/sceneHandlers.js"
-import { OrbitControls } from '../libs/three.js/controls/OrbitControls.js';
-import { OBJLoader  } from '../libs/three.js/loaders/OBJLoader.js';
-import { MTLLoader } from '../libs/three.js/loaders/MTLLoader.js';
 import { GLTFLoader } from '../libs/three.js/loaders/GLTFLoader.js';
-//import {DragControls} from '../libs/three.js/controls/DragControls.js';
 
 let renderer = null, scene = null, camera = null
-let controls = null;
 const duration = 5000; // ms
 let currentTime = Date.now();
 let squares = [];
 let cube;
 let cube2;
 let cube3;
-let snow;
-let box;
-//Ejemplos clase
-let SHADOW_MAP_WIDTH = 1024, SHADOW_MAP_HEIGHT = 1024;
 
-let kirbylUrl = {obj:'../models/obj/Kirby/source/Kirby1.obj', mtl:'../models/obj/Kirby/source/Kirby1.mtl'};
-let objectList = []
+let snow;
+
+let box;
+let boxBBox;
+
+let kirbysBBox;
+let kirby_obj;
+
 
 function main() 
 {
     const canvas = document.getElementById("webglcanvas");
     createScene(canvas);
     createRing1();
-    createIceCream()
-    createCone()
+    createIceCream();
+    createCone();
     update();
 }
 async function loadGLTF(gltfModelUrl)
@@ -38,39 +34,41 @@ async function loadGLTF(gltfModelUrl)
     try
     {
         const gltfLoader = new GLTFLoader();
-
         const result = await gltfLoader.loadAsync(gltfModelUrl);
 
-        const object = result.scene || result.scenes[0];
+        kirby_obj = result.scene || result.scenes[0];
 
-        object.position.y = -1;
-        //object.rotation.y = Math.PI;
-        object.rotation.x = Math.PI;
-        object.scale.set(0.1, 0.1, 0.1);
-        object.position.z = 50;
-        object.rotation.z = Math.PI;
-        scene.add(object); 
-        console.log(object);
+        kirby_obj.position.y = -1;
+        kirby_obj.rotation.x = Math.PI;
+        kirby_obj.scale.set(0.1, 0.1, 0.1);
+        kirby_obj.position.z = 50;
+        kirby_obj.rotation.z = Math.PI;
+        scene.add(kirby_obj); 
+        console.log(kirby_obj);
+        kirbysBBox = new THREE.BoxHelper(kirby_obj, 0x00ff00);
+        kirbysBBox.update();
+        kirbysBBox.visible = true;
+        scene.add(kirbysBBox);
         
         document.onkeydown =function (e){
             if(e.keyCode == 37){
-                if(object.position.x > -4)
-                    object.position.x -= 1;
-                    console.log("Movimiento Izquierda " + object.position.x)
+                if(kirby_obj.position.x > -4)
+                    kirby_obj.position.x -= 1;
+                    
             }else if(e.keyCode == 39){
-                if(object.position.x < 4)
-                    object.position.x += 1;
-                    console.log("Movimiento Derecha " + object.position.x)
+                if(kirby_obj.position.x < 4)
+                    kirby_obj.position.x += 1;
+                    
             }
             else if(e.keyCode == 38){
-                if(object.position.y < 3)
-                    object.position.y += 1;
-                    console.log("Movimiento Arriba " + object.position.y)
+                if(kirby_obj.position.y < 3)
+                    kirby_obj.position.y += 1;
+                    
             }
             else if(e.keyCode == 40){
-                if(object.position.y > -3)
-                    object.position.y -= 1;
-                    console.log("Movimiento Abajo " + object.position.y)
+                if(kirby_obj.position.y > -3)
+                    kirby_obj.position.y -= 1;
+                    
             }
         }
              
@@ -101,7 +99,9 @@ function createRing3(){
     squares.push(cube3);
     scene.add(cube3);
 }
-function createIceCream(){ //sphere with ice cream texture, it's the power up
+
+//sphere with ice cream texture, it's the power up
+function createIceCream(){ 
     const textureUrl = "../images/lemon.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
     let Material = new THREE.MeshPhongMaterial({map: texture});
@@ -116,7 +116,8 @@ function createIceCream(){ //sphere with ice cream texture, it's the power up
     scene.add(snow);
 }
 
-function createCone(){ //Cone with crital texture, similar to a bullet, this is the obstacle
+//Cone with crital texture, similar to a bullet, this is the obstacle
+function createCone(){ 
     const geometry = new THREE.ConeGeometry(1, 8, 9);
     const textureUrl = "../images/cristal.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
@@ -126,7 +127,15 @@ function createCone(){ //Cone with crital texture, similar to a bullet, this is 
     box.position.z = 30;
     box.position.x = 4;
     box.position.y= 4;
+    
+    //Hitbox
+    boxBBox =  new THREE.BoxHelper(box, 0x00ff00);
+    boxBBox.update();
+    boxBBox.visible = true; 
+
     scene.add(box);
+    scene.add(boxBBox);
+
 }
 
 function onError ( err ){ console.error( err ); };
@@ -139,7 +148,6 @@ function onProgress( xhr )
         console.log( xhr.target.responseURL, Math.round( percentComplete, 2 ) + '% downloaded' );
     }
 }
-
 
 /**
  * Updates the rotation of the objects in the scene
@@ -174,6 +182,15 @@ function update()
     renderer.render(scene, camera);
     //controls.update();
 
+    //Update hitbox  
+    kirbysBBox.update();
+    const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
+    const boxBox = new THREE.Box3().setFromObject(box);
+
+    boxBox.material = boxBox.intersectsBox(kirbyBox) 
+        ? materials.colliding 
+        //: materials.solid;  
+        : console.log("collition"); 
     animate();
     
 }
@@ -190,29 +207,16 @@ function createScene(canvas)
     renderer.setSize(canvas.width, canvas.height);
     // Create a new Three.js scene
     scene = new THREE.Scene();
-    // Set the background color 
-    /*const loader = new THREE.TextureLoader();
-    loader.load('../images/nightskygalaxy.jpg' , function(texture)
-            {
-             scene.background = texture;  
-            });*/
-
     // Add  a camera so we can view the scene
     camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
     camera.position.z = 60;
-    
     scene.add(camera);
-    // Orbit controls 
-    //controls = new OrbitControls( camera, renderer.domElement );
-    //controls.update();
+    //Light
     const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
     scene.add(ambientLight);
+    //kirby model
     loadGLTF('../models/obj/Kirby.glb');
 
-    //Obj kirbo
-    //loadObjMtl(kirbylUrl, objectList);
-
- 
 }
 
 function resize()
