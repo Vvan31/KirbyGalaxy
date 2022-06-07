@@ -12,8 +12,10 @@ let ring2;
 let ring3;
 
 let coneCounter = 0;
+let snow_counter = 0;
 
 let arrBullets = [];
+let arrSnow = [];
 
 let snow;
 
@@ -110,17 +112,34 @@ function createRing3(){
 
 //sphere with ice cream texture, it's the power up
 function createIceCream(){ 
+
+    //-----Create 
     const textureUrl = "../images/lemon.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
     let Material = new THREE.MeshPhongMaterial({map: texture});
     let geometry = new THREE.SphereGeometry(0.3,32,32);
     snow = new THREE.Mesh(geometry, Material);
+
+    //-----ID
+    snow.name = 'Snow number ' + snow_counter
+    snow_counter += 1
+
+    //----Position
     snow.position.z = 30;
-    snow.position.x = -4;
-    snow.position.y = 4;
+    snow.position.x = randomInt(-4,4);
+    snow.position.y = randomInt(-4,4);
+
+    
+
+
     const light = new THREE.PointLight( 0xd4fffe, 1, 100 );
     light.position.set( 30, -2, -1 );
     scene.add( light );
+
+    //-------Array 
+    arrSnow.push(snow)
+
+
     scene.add(snow);
 }
 
@@ -187,12 +206,15 @@ function animate()
         else
             ring.position.z += 26*angle;
     
-    /*for(const bullet of arrBullets){
-        bullet.position.z += 1
-        if(bullet.position.z > 4){
-            createCone()
+
+    for(const snowball of arrSnow){
+        snowball.position.z += 1
+        if(snowball.position.z > 51){
+            scene.remove(snowball)
+            arrSnow.pop(snowball)
+            createIceCream()
         }
-    }*/
+    }
 
     for (const bullet of arrBullets){
         bullet.position.z += 1
