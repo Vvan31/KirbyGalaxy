@@ -12,20 +12,20 @@ let ring2;
 let ring3;
 
 let coneCounter = 0;
-let snow_counter = 0;
-let snow_collision_counter = 0;
 
 let arrBullets = [];
 let arrSnow = [];
 
 let snow;
-let snowBox;
-
+let snow_counter = 0;
+let snow_collision_counter = 0;
+let snowBBox;
 let cone;
-let coneBox;
+let boxBBox;
 
 let kirbysBBox;
 let kirby_obj;
+let score = 0;
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
@@ -131,17 +131,17 @@ function createIceCream(){
     snow.position.x = randomInt(-4,4);
     snow.position.y = randomInt(-4,4);
 
+    //---Hitbox
+    snowBBox =  new THREE.BoxHelper(snow, 0x00ff00);
+    snowBBox.update();
+    snowBBox.visible = true;
+
     //-------Array 
     arrSnow.push(snow)
 
-    
-    //---Hitbox
-    snowBox =  new THREE.BoxHelper(snow, 0x00ff00);
-    snowBox.update();
-    snowBox.visible = true; 
-
 
     scene.add(snow);
+    scene.add(snowBBox);
 }
 
 //Cone with crital texture, similar to a bullet, this is the obstacle
@@ -164,14 +164,14 @@ function createCone(){
     cone.position.y= randomInt(-4, 4);
     
     //------Hitbox
-    coneBox =  new THREE.BoxHelper(cone, 0x00ff00);
-    coneBox.update();
-    coneBox.visible = true; 
+    boxBBox =  new THREE.BoxHelper(cone, 0x00ff00);
+    boxBBox.update();
+    boxBBox.visible = true; 
 
     arrBullets.push(cone)
 
     scene.add(cone);
-    scene.add(coneBox);
+    scene.add(boxBBox);
 
 }
 
@@ -212,6 +212,8 @@ function animate()
         snowball.position.z += 0.5
         if(snowball.position.z > 51){
             scene.remove(snowball)
+            scene.remove(snowBBox)
+
             arrSnow.pop(snowball)
             createIceCream()
         }
@@ -221,7 +223,7 @@ function animate()
         bullet.position.z += 0.5
         if(bullet.position.z > 51){
             scene.remove(bullet)
-            scene.remove(coneBox)
+            scene.remove(boxBBox)
             arrBullets.pop(bullet)
             createCone()
         }
@@ -241,8 +243,8 @@ function update()
 
     //Update hitbox  
     kirbysBBox.update();
-    coneBox.update();
-    snowBox.update()
+    boxBBox.update();
+    snowBBox.update()
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
     const boxBox = new THREE.Box3().setFromObject(cone);
     const snowsBox = new THREE.Box3().setFromObject(snow);
@@ -252,11 +254,21 @@ function update()
     }
     if(snowsBox.intersectsBox(kirbyBox)){
         snow_collision_counter += 1
+        go();
         console.log('snow collision ' + snow_collision_counter)
     }
+    
     animate();
     
 }
+
+// Score
+function go(){
+    score +=10;
+    console.log(score);
+    var myDiv = document.getElementById("score");
+    myDiv.innerHTML = score;
+  }
 
 /**
  * Creates a basic scene with lights, a camera, and 3 objects
