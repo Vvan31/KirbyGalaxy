@@ -129,15 +129,8 @@ function createIceCream(){
     snow.position.x = randomInt(-4,4);
     snow.position.y = randomInt(-4,4);
 
-    
-
-
-    const light = new THREE.PointLight( 0xd4fffe, 1, 100 );
-    light.position.set( 30, -2, -1 );
-    scene.add( light );
-
     //-------Array 
-    //arrSnow.push(snow)
+    arrSnow.push(snow)
 
 
     scene.add(snow);
@@ -208,7 +201,7 @@ function animate()
     
 
     for(const snowball of arrSnow){
-        snowball.position.z += 1
+        snowball.position.z += 0.5
         if(snowball.position.z > 51){
             scene.remove(snowball)
             arrSnow.pop(snowball)
@@ -217,9 +210,10 @@ function animate()
     }
 
     for (const bullet of arrBullets){
-        bullet.position.z += 1
+        bullet.position.z += 0.5
         if(bullet.position.z > 51){
             scene.remove(bullet)
+            scene.remove(boxBBox)
             arrBullets.pop(bullet)
             createCone()
         }
@@ -242,11 +236,9 @@ function update()
     boxBBox.update();
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
     const boxBox = new THREE.Box3().setFromObject(cone);
-
-    boxBox.material = boxBox.intersectsBox(kirbyBox) 
-        ? materials.colliding 
-        //: materials.solid;  
-        : console.log("collition"); 
+    if(boxBox.intersectsBox(kirbyBox)){
+        console.log("collision");
+    }
     animate();
     
 }
