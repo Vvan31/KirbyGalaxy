@@ -257,6 +257,7 @@ function update()
     }
     if(snowsBox.intersectsBox(kirbyBox)){
         snow_collision_counter += 1
+        scene.remove(snow)
         go();
         console.log('snow collision ' + snow_collision_counter)
     }
