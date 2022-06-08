@@ -137,7 +137,7 @@ function createIceCream(){
     scene.add( light );
 
     //-------Array 
-    arrSnow.push(snow)
+    //arrSnow.push(snow)
 
 
     scene.add(snow);
@@ -239,6 +239,7 @@ function update()
 
     //Update hitbox  
     kirbysBBox.update();
+    boxBBox.update();
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
     const boxBox = new THREE.Box3().setFromObject(cone);
 
