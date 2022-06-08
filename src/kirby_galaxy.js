@@ -122,11 +122,6 @@ function createIceCream(){
     let geometry = new THREE.SphereGeometry(0.3,32,32);
     snow = new THREE.Mesh(geometry, Material);
 
-    //---Hitbox
-    snowBox =  new THREE.BoxHelper(cone, 0x00ff00);
-    snowBox.update();
-    snowBox.visible = true; 
-
     //-----ID
     snow.name = 'Snow number ' + snow_counter
     snow_counter += 1
@@ -138,6 +133,12 @@ function createIceCream(){
 
     //-------Array 
     arrSnow.push(snow)
+
+    
+    //---Hitbox
+    snowBox =  new THREE.BoxHelper(snow, 0x00ff00);
+    snowBox.update();
+    snowBox.visible = true; 
 
 
     scene.add(snow);
