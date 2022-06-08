@@ -248,6 +248,7 @@ function update()
     const snowsBox = new THREE.Box3().setFromObject(snow);
     if(boxBox.intersectsBox(kirbyBox)){
         console.log("collision");
+        window.location.replace('gameOver.html')
     }
     if(snowsBox.intersectsBox(kirbyBox)){
         snow_collision_counter += 1
