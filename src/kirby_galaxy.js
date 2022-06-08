@@ -13,14 +13,16 @@ let ring3;
 
 let coneCounter = 0;
 let snow_counter = 0;
+let snow_collision_counter = 0;
 
 let arrBullets = [];
 let arrSnow = [];
 
 let snow;
+let snowBox;
 
 let cone;
-let boxBBox;
+let coneBox;
 
 let kirbysBBox;
 let kirby_obj;
@@ -120,6 +122,11 @@ function createIceCream(){
     let geometry = new THREE.SphereGeometry(0.3,32,32);
     snow = new THREE.Mesh(geometry, Material);
 
+    //---Hitbox
+    snowBox =  new THREE.BoxHelper(cone, 0x00ff00);
+    snowBox.update();
+    snowBox.visible = true; 
+
     //-----ID
     snow.name = 'Snow number ' + snow_counter
     snow_counter += 1
@@ -156,14 +163,14 @@ function createCone(){
     cone.position.y= randomInt(-4, 4);
     
     //------Hitbox
-    boxBBox =  new THREE.BoxHelper(cone, 0x00ff00);
-    boxBBox.update();
-    boxBBox.visible = true; 
+    coneBox =  new THREE.BoxHelper(cone, 0x00ff00);
+    coneBox.update();
+    coneBox.visible = true; 
 
     arrBullets.push(cone)
 
     scene.add(cone);
-    scene.add(boxBBox);
+    scene.add(coneBox);
 
 }
 
@@ -213,7 +220,7 @@ function animate()
         bullet.position.z += 0.5
         if(bullet.position.z > 51){
             scene.remove(bullet)
-            scene.remove(boxBBox)
+            scene.remove(coneBox)
             arrBullets.pop(bullet)
             createCone()
         }
@@ -233,11 +240,17 @@ function update()
 
     //Update hitbox  
     kirbysBBox.update();
-    boxBBox.update();
+    coneBox.update();
+    snowBox.update()
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
     const boxBox = new THREE.Box3().setFromObject(cone);
+    const snowsBox = new THREE.Box3().setFromObject(snow);
     if(boxBox.intersectsBox(kirbyBox)){
         console.log("collision");
+    }
+    if(snowsBox.intersectsBox(kirbyBox)){
+        snow_collision_counter += 1
+        console.log('snow collision ' + snow_collision_counter)
     }
     animate();
     
