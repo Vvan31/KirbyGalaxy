@@ -189,6 +189,9 @@ function onProgress( xhr )
 /**
  * Updates the rotation of the objects in the scene
  */
+
+
+
 function animate() 
 {
     const now = Date.now();
