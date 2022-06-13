@@ -1,32 +1,42 @@
 html {
+    overflow: hidden;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%,#090a0f 100%);
+    /*  background: radial-gradient(ellipse at bottom, #1b2735 0%,#090a0f 100%);
+    */ background-color: black;
 }
 body {
     overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  
-  #score {
-    transform-style: preserve-3d;
-    font-size:90px;
-    line-height: 90px;
+
+    .top_row{
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+    margin: auto;
+    padding-left: 5%;
+    }
+
+  .top_column{
+    position: relative;
+    float: left;
+    width: 50%;
+}
+
+  #num_score {
+    font-size:150%;
     color: pink;
   }
-  #tag {
-    transform-style: preserve-3d;
-    display: none;
-    position:absolute;
-    top: -55px;
-    left:50%;
-    transform: translateX(-50%);
-    font-size:50px;
-    line-height: 50px;
+  #score_title {
+    color: pink;
+    font-size:150%;
   } 
-#title {
-    position: relative;
-    display: block;
-    margin: auto;
-}
+  #title {
+    color: pink;
+    font-size:200%;
+  } 
 
 #kirbyimg{
     position: relative;
@@ -89,6 +99,14 @@ body {
    CREDITS OVERLAY NAVIGATION
    DE: https://codepen.io/whatthephuc/pen/XYpLWW 
 *****************************/
+.credits{
+    top: 50%;
+    position:relative;
+    display: block;
+    margin:auto;
+    justify-content: center;
+}
+
 /*ul*/.nav {
     /* set ul */
     list-style-type: none;
@@ -119,12 +137,16 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    overflow-Y: auto;
+    height: 140%;
+    /* //overflow-Y: auto; */
+    display: block;
+    margin:auto;
+    justify-content: center;
+    
     background-image: url('../images/kirbyBackGrnd.jpg');
     
     /* hide nav by moving up instead of display:none; */
-    transform: translateY(-100%);
+    transform: translateY(-130%);
     
     /* delay hiding of nav by transtition time */
     transition: transform 0s var(--transition-time) var(--transition);

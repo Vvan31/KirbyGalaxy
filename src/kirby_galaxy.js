@@ -59,7 +59,7 @@ async function loadGLTF(gltfModelUrl)
         console.log(kirby_obj);
         kirbysBBox = new THREE.BoxHelper(kirby_obj, 0x00ff00);
         kirbysBBox.update();
-        kirbysBBox.visible = true;
+        kirbysBBox.visible = false;
         scene.add(kirbysBBox);
         
         document.onkeydown =function (e){
@@ -116,9 +116,9 @@ function createRing3(){
 function createIceCream(){ 
 
     //-----Create 
-    const textureUrl = "../images/lemon.jpg";
+    const textureUrl = "../images/pink.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
-    let Material = new THREE.MeshPhongMaterial({map: texture});
+    const Material = new THREE.MeshBasicMaterial({map: texture});
     let geometry = new THREE.SphereGeometry(0.3,32,32);
     snow = new THREE.Mesh(geometry, Material);
 
@@ -134,11 +134,10 @@ function createIceCream(){
     //---Hitbox
     snowBBox =  new THREE.BoxHelper(snow, 0x00ff00);
     snowBBox.update();
-    snowBBox.visible = true;
+    snowBBox.visible = false;
 
     //-------Array 
     arrSnow.push(snow)
-
 
     scene.add(snow);
     scene.add(snowBBox);
@@ -166,7 +165,7 @@ function createCone(){
     //------Hitbox
     boxBBox =  new THREE.BoxHelper(cone, 0x00ff00);
     boxBBox.update();
-    boxBBox.visible = true; 
+    boxBBox.visible = false; 
 
     arrBullets.push(cone)
 
@@ -189,8 +188,6 @@ function onProgress( xhr )
 /**
  * Updates the rotation of the objects in the scene
  */
-
-
 
 function animate() 
 {
@@ -270,10 +267,27 @@ function update()
 function go(){
     score +=10;
     console.log(score);
-    var myDiv = document.getElementById("score");
+    var myDiv = document.getElementById("num_score");
     myDiv.innerHTML = score;
   }
 
+  function loadMusic(){
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    scene.add( listener );
+
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( '../images/sound/Caramelldansen.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.05 );
+        sound.play();
+    });
+  }
 /**
  * Creates a basic scene with lights, a camera, and 3 objects
  * @param {canvas} canvas The canvas element to render on
@@ -291,10 +305,13 @@ function createScene(canvas)
     camera.position.z = 60;
     scene.add(camera);
     //Light
-    const ambientLight = new THREE.AmbientLight(0xffccaa, 3);
+    const ambientLight = new THREE.AmbientLight(0xffccaa, 5);
     scene.add(ambientLight);
     //kirby model
-    loadGLTF('../models/obj/Kirby.glb');
+    loadGLTF('../models/obj/Kirbo.glb');
+
+    //Music
+    loadMusic();
 
 }
 
@@ -306,8 +323,8 @@ function resize()
     canvas.height = document.body.clientHeight;
 
     camera.aspect = canvas.width / canvas.height;
-
     camera.updateProjectionMatrix();
+
     renderer.setSize(canvas.width, canvas.height);
 }
 
@@ -316,4 +333,4 @@ window.onload = () => {
     resize(); 
 };
 
-window.addEventListener('resize', resize, false);
+window.addEventListener('resize', resize);
