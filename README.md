@@ -1,29 +1,27 @@
 # KirbyGalaxy
 
-Este juego es tipo “endless run” en el que nuestro personaje Kirby tiene que esquivar rocas mientras navega a través de una galaxia en su estrella para poder volver a casa antes de que se descongele su helado. 
+Este juego es tipo “endless runner” en el que nuestro personaje Kirby tiene que esquivar cristales que lo destruyen mientras navega a través de una galaxia en su estrella para poder volver a casa antes de que se descongele su helado. 
 
 El modelo que se usará es el siguiente: "Kirby on a star" (https://skfb.ly/ooNBN) by Knighthart is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). 
 
 ### Requerimientos funcionales:
 
-1. Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral. Kirby tiene que moverse solo de izquierda a derecha (movimiento fluido).
-2. Se van a tener 2 tipos de obstáculos con el mismo tipo de funcionalidad: al tocarlos Kirby pierde.
-3 Cristales power up para activar el mouthfull mode y ser inmortal por 5 segundos. 
-4. Kirby tendrá un temporizador el cual medirá su tiempo de juego.
-5. Pantalla de inicio.
-6. Pantalla de game over con el tiempo de juego. 
-7. Pantalla de win 
+1. Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral y horizontal. Kirby tiene que moverse solo de izquierda a derecha y de arriba abajo con las flechas del teclado.
+2. Se van a tener 1 tipos de obstáculo con 1 funcionalidad: al tocarlos Kirby pierde.
+3 Bolas de helado freeze points que le ayudara a acumular puntos de juego en el score. 
+4. Kirby tendrá un score dentro de la partida y un highscore en la pantalla de game over.
+5. Pantalla de inicio con botones start y credits.
+6. Pantalla de game over con el score de la partida jugada y un highscore con el puntaje más alto. 
   
 
 
 ### Como se van a resolver los requerimientos funcionales
-1. El movimiento de Kirby será completamente horizontal, su movimiento será fluido, sin presencia de carriles.
-2. Los obstáculos propuestos son asteroides y bolas de fuego.
-3. Es un cristal especial que al estar en contacto con Kirby este se vuelve inmortal refiriéndose a que los obstáculos no lo afectan.
-4. Este tiempo será contado para ver cuanto dura el jugador
-5. La pantalla tendrá botones para comenzar el juego o salir.
-6. La pantalla indicará que perdiste con el tiempo marcado
-7. La pantalla tendrá a Kirby con un letrero de win.
+1. El movimiento de Kirby será horizontal y vertical, sin presencia de carriles.
+2. Los obstáculos  son cristales que destruyen a kirby al entrar en contacto con el y automaticamente pierde la partida mandando al jugador a la pantalla de gameover.
+3. Las bolas de helado que al estar en contacto con Kirby le dan puntos de juego que estaran acumulandose en el score de la partida.
+4. La pantalla de juego tendrá botones para salir al menu principal.
+5. La pantalla de gameover indicará que perdiste con el score de la partida y el highscore.
+6. La pantalla de inicio tendra el titulo del juego, un boton para iniciar la partida y un boton para ver los creditos.
 
 
 ### Plan de Trabajo
