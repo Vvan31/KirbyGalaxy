@@ -11,6 +11,7 @@ let ring;
 let ring2;
 let ring3;
 
+let cone;
 let coneCounter = 0;
 
 let arrBullets = [];
@@ -20,14 +21,14 @@ let snow;
 let snow_counter = 0;
 let snow_collision_counter = 0;
 let snowBBox;
-let cone;
+
 let boxBBox;
 
 let kirbysBBox;
 let kirby_obj;
 let score = 0;
 
-function randomInt(min, max) {
+function randomInt(min, max) { //Just an easier way to get a random int constantly for the cones and snowballs
     return Math.floor(Math.random() * (max - min) ) + min;
   }
 
@@ -41,6 +42,8 @@ function main()
     createCone();
     update();
 }
+
+//function that loads the Kirby model
 async function loadGLTF(gltfModelUrl)
 {
     try
@@ -50,11 +53,15 @@ async function loadGLTF(gltfModelUrl)
 
         kirby_obj = result.scene || result.scenes[0];
 
+        //Get Kirby into position
         kirby_obj.position.y = -1;
         kirby_obj.rotation.x = Math.PI;
         kirby_obj.scale.set(0.15, 0.15, 0.15);
         kirby_obj.position.z = 50;
         kirby_obj.rotation.z = Math.PI;
+
+
+        //Add to the scene
         scene.add(kirby_obj); 
         console.log(kirby_obj);
         kirbysBBox = new THREE.BoxHelper(kirby_obj, 0x00ff00);
@@ -62,6 +69,9 @@ async function loadGLTF(gltfModelUrl)
         kirbysBBox.visible = false;
         scene.add(kirbysBBox);
         
+        //Controls
+        //Kirby moves up, down, right and left
+        //The range of Kirby's movement is -4 to 4 on x and -3 to 3 on y
         document.onkeydown =function (e){
             if(e.keyCode == 37){
                 if(kirby_obj.position.x > -4)
@@ -90,6 +100,9 @@ async function loadGLTF(gltfModelUrl)
         console.error(err);
     }
 }
+
+//Ring Creation-------------------------------------------------------------------------
+//Rings that create the moving forward effect
 function createRing1(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xd10fd1});
@@ -97,6 +110,7 @@ function createRing1(){
     rings.push(ring);
     scene.add(ring);
 }
+
 function createRing2(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0x33aa99});
@@ -104,6 +118,7 @@ function createRing2(){
     rings.push(ring2);
     scene.add(ring2);
 }
+
 function createRing3(){
     const geometry = new THREE.RingGeometry(0.9,1,10);
     const material = new THREE.MeshBasicMaterial({color: 0xe8f05d});
@@ -145,6 +160,7 @@ function createIceCream(){
 
 //Cone with crital texture, similar to a bullet, this is the obstacle
 function createCone(){ 
+    //-----Create
     const geometry = new THREE.ConeGeometry(0.4, 4, 9);
     const textureUrl = "../images/cristal.jpg";
     const texture = new THREE.TextureLoader().load(textureUrl);
@@ -167,8 +183,8 @@ function createCone(){
     boxBBox.update();
     boxBBox.visible = false; 
 
+    //Add to the array and to the scene
     arrBullets.push(cone)
-
     scene.add(cone);
     scene.add(boxBBox);
 
@@ -197,6 +213,7 @@ function animate()
     const fract = deltat / duration;
     const angle = Math.PI * 2 * fract;
 
+    //Recycling rings to save memory :D
     if(ring.position.z > 20 && rings.length<3)
         createRing2();
     if(ring.position.z > 40 && rings.length<4)
@@ -208,6 +225,7 @@ function animate()
             ring.position.z += 26*angle;
     
 
+    //move the snowballs and erase 
     for(const snowball of arrSnow){
         snowball.position.z += 0.5
         if(snowball.position.z > 51){
@@ -219,6 +237,7 @@ function animate()
         }
     }
 
+    //move cones/bullets and erase
     for (const bullet of arrBullets){
         bullet.position.z += 0.5
         if(bullet.position.z > 51){
@@ -245,24 +264,28 @@ function update()
     kirbysBBox.update();
     boxBBox.update();
     snowBBox.update()
+
+    //Check for collisions
     const kirbyBox = new THREE.Box3().setFromObject(kirby_obj);
     const boxBox = new THREE.Box3().setFromObject(cone);
     const snowsBox = new THREE.Box3().setFromObject(snow);
     if(boxBox.intersectsBox(kirbyBox)){
         localStorage.setItem("SCORE", JSON.stringify(score));
+        //Bullet hit Kirby so Game Over :()
         window.location.replace('gameOver.html')
     }
     if(snowsBox.intersectsBox(kirbyBox)){
         scene.remove(snow)
-        go();
+        //Kirby touched a snowball, points for the player
+        powerUp();
     }
     
     animate();
     
 }
 
-// Score
-function go(){
+//
+function powerUp(){ //Function that gets called when the user hits a power up, the score goes up and sound effect is played
     loadSoundEffect()
     score +=10;
     var myDiv = document.getElementById("num_score");
