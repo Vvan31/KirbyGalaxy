@@ -74,21 +74,21 @@ async function loadGLTF(gltfModelUrl)
         //The range of Kirby's movement is -4 to 4 on x and -3 to 3 on y
         document.onkeydown =function (e){
             if(e.keyCode == 37){
-                if(kirby_obj.position.x > -4)
+                if(kirby_obj.position.x > -4.5)
                     kirby_obj.position.x -= 1;
                     
             }else if(e.keyCode == 39){
-                if(kirby_obj.position.x < 4)
+                if(kirby_obj.position.x < 4.5)
                     kirby_obj.position.x += 1;
                     
             }
             else if(e.keyCode == 38){
-                if(kirby_obj.position.y < 3)
+                if(kirby_obj.position.y < 3.5)
                     kirby_obj.position.y += 1;
                     
             }
             else if(e.keyCode == 40){
-                if(kirby_obj.position.y > -3)
+                if(kirby_obj.position.y > -3.5)
                     kirby_obj.position.y -= 1;
                     
             }
