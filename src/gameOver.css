@@ -33,6 +33,13 @@ body, html {
     margin-left: 35%;
     
 }
+.menu_option2{
+    position: relative;
+    display: block;
+   /*  margin: 50px; */
+    margin-left: 35%;
+    
+}
 
 .menu_option1 .img-top1{
     display: none;
@@ -45,4 +52,11 @@ body, html {
 
 .menu_option1:hover .img-top1{
     display: inline;
+}
+
+#num_score{
+    color: white;
+}
+#high_score{
+    color: white;
 }

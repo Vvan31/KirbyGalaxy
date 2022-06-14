@@ -1,21 +1,50 @@
 
-const score = 0;
-const no_high_scores = 5;
-const HIGH_SCORES = 'highScores';
-// Translate to string JSON
-const highScoreString = localStorage.getItem(HIGH_SCORES);
-const highScores = JSON.parse(highScoreString) ?? [];
+import * as THREE from "../libs/three.js/three.module.js"
 
-const lowestScore = 0;
+let score = localStorage.getItem('SCORE');
+let highscore = localStorage.getItem('HSCORE');
+let scene;
 
-// Add data
-localStorage.setItem('myCar', 'Tesla');
+if (parseInt(score) >= parseInt(highscore)){
+    localStorage.setItem('HSCORE', score);
+}else if(highscore == null){
+    localStorage.setItem('HSCORE', score);
+}
 
-// Read data
-const car = localStorage.getItem('myCar');
+function main() 
+{
+    const canvas = document.getElementById("webglcanvas");
+    createScene(canvas);
+    loadMusic()
+}
 
-// Remove specific data
-localStorage.removeItem('myCar');
+function loadMusic(){
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    scene.add( listener );
 
-// Remove all data
-localStorage.clear();
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( '../images/sound/Cursed.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.05 );
+        sound.play();
+    });
+  }
+
+  function createScene()
+{   
+    // Create a new Three.js scene
+    scene = new THREE.Scene();
+}
+
+window.addEventListener('load' , () =>{
+    document.getElementById('num_score').innerHTML = "Score: " + score
+    document.getElementById('high_score').innerHTML = "HighScore: " + highscore
+})
+
+main() 

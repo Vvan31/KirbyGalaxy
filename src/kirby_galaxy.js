@@ -52,7 +52,7 @@ async function loadGLTF(gltfModelUrl)
 
         kirby_obj.position.y = -1;
         kirby_obj.rotation.x = Math.PI;
-        kirby_obj.scale.set(0.1, 0.1, 0.1);
+        kirby_obj.scale.set(0.15, 0.15, 0.15);
         kirby_obj.position.z = 50;
         kirby_obj.rotation.z = Math.PI;
         scene.add(kirby_obj); 
@@ -249,14 +249,12 @@ function update()
     const boxBox = new THREE.Box3().setFromObject(cone);
     const snowsBox = new THREE.Box3().setFromObject(snow);
     if(boxBox.intersectsBox(kirbyBox)){
-        console.log("collision");
+        localStorage.setItem("SCORE", JSON.stringify(score));
         window.location.replace('gameOver.html')
     }
     if(snowsBox.intersectsBox(kirbyBox)){
-        snow_collision_counter += 1
         scene.remove(snow)
         go();
-        console.log('snow collision ' + snow_collision_counter)
     }
     
     animate();
@@ -265,10 +263,28 @@ function update()
 
 // Score
 function go(){
+    loadSoundEffect()
     score +=10;
-    console.log(score);
     var myDiv = document.getElementById("num_score");
     myDiv.innerHTML = score;
+  }
+
+  function loadSoundEffect(){
+    // create an AudioListener and add it to the camera
+    const listenerS = new THREE.AudioListener();
+    scene.add( listenerS );
+
+    // create a global audio source
+    const sound = new THREE.Audio( listenerS );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoaderS = new THREE.AudioLoader();
+    audioLoaderS.load( '../images/sound/pop.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( false );
+        sound.setVolume( 0.05 );
+        sound.play();
+    });
   }
 
   function loadMusic(){
