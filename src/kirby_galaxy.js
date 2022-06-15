@@ -288,7 +288,7 @@ function update()
 function powerUp(){ //Function that gets called when the user hits a power up, the score goes up and sound effect is played
     loadSoundEffect()
     score +=10;
-    var myDiv = document.getElementById("num_score");
+    const myDiv = document.getElementById("num_score");
     myDiv.innerHTML = score;
   }
 
