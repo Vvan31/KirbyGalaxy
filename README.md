@@ -7,6 +7,7 @@
   <a href="#built-with">Built With</a> •
   <a href="#getting-started">Getting Started</a> •
   <a href="#usage">Usage</a> •
+  <a href="#credits">Credits</a> •
 </p>
 <div align="center">
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Vvan31/KirbyGalaxy">
@@ -57,5 +58,6 @@ To get a local copy up and running follow these simple example steps.
 ![image](https://user-images.githubusercontent.com/71792220/209890223-ad2b539b-aa0d-4b6d-b9b4-73e017b3562d.png)
 ![image](https://user-images.githubusercontent.com/71792220/209890239-d85343b5-17e6-4ec4-bc5f-dbb7cdc9a393.png)
 
-
+## Credits 
+- Model: "Kirby on a star" (https://skfb.ly/ooNBN) by Knighthart is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
