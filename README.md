@@ -1,38 +1,61 @@
-# KirbyGalaxy
+<h1 align="center">
+  <br>Kirby Galaxy<br><br>
+</h1>
 
-Este juego es tipo “endless runner” en el que nuestro personaje Kirby tiene que esquivar cristales que lo destruyen mientras navega a través de una galaxia en su estrella para poder volver a casa antes de que se descongele su helado. 
+<p align="center">
+  <a href="#about">About</a> •
+  <a href="#built-with">Built With</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#usage">Usage</a> •
+</p>
+<div align="center">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Vvan31/KirbyGalaxy">
+</div>
 
-El modelo que se usará es el siguiente: "Kirby on a star" (https://skfb.ly/ooNBN) by Knighthart is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). 
+## About:
 
-### Requerimientos funcionales:
+Endless runner type of game featuring Kirby on another adventure in which Kirby has to travel across the galaxy avoiding crystals to get back home before his ice cream melts. 
 
-1. Kirby va a estar volando en su estrella voladora, no tendrá movimiento fuera de su traslación lateral y horizontal. Kirby tiene que moverse solo de izquierda a derecha y de arriba abajo con las flechas del teclado.
-2. Se van a tener 1 tipos de obstáculo con 1 funcionalidad: al tocarlos Kirby pierde.
-3 Bolas de helado freeze points que le ayudara a acumular puntos de juego en el score. 
-4. Kirby tendrá un score dentro de la partida y un highscore en la pantalla de game over.
-5. Pantalla de inicio con botones start y credits.
-6. Pantalla de game over con el score de la partida jugada y un highscore con el puntaje más alto. 
-  
+## Built With:
+
+<div style="display:flex; justify-content:space-between;">
+
+<a src="https://www.javascript.com/"> 
+    <img alt="JS"     src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/800px-Unofficial_JavaScript_logo_2.svg.png" width="80">
+ </a> 
+
+ <img alt="htmlt" src="https://miro.medium.com/max/792/1*lJ32Bl-lHWmNMUSiSq17gQ.png" width="100">
+ 
+<a src="https://threejs.org/"> 
+    <img alt="three js" src="https://i.imgur.com/ygvUXeo.png" width="80">
+ </a> 
+ 
+ <a src="https://glmatrix.net/"> 
+    <img alt="GL Matrix" src="https://user-images.githubusercontent.com/71792220/209891168-e772b7c6-1ac6-4a24-b696-4402e5f9b10c.png">
+ </a> 
+</div>
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+### Usage
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/Vvan31/KirbyGalaxy.git
+   ```
+2. Run Menu html file inside src folder
+   ```sh
+   open mainPage.html
+   ```
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+![image](https://user-images.githubusercontent.com/71792220/209890166-c8e164a2-1221-40e8-b010-10c34250893c.png)
+![image](https://user-images.githubusercontent.com/71792220/209890223-ad2b539b-aa0d-4b6d-b9b4-73e017b3562d.png)
+![image](https://user-images.githubusercontent.com/71792220/209890239-d85343b5-17e6-4ec4-bc5f-dbb7cdc9a393.png)
 
 
-### Como se van a resolver los requerimientos funcionales
-1. El movimiento de Kirby será horizontal y vertical, sin presencia de carriles.
-2. Los obstáculos  son cristales que destruyen a kirby al entrar en contacto con el y automaticamente pierde la partida mandando al jugador a la pantalla de gameover.
-3. Las bolas de helado que al estar en contacto con Kirby le dan puntos de juego que estaran acumulandose en el score de la partida.
-4. La pantalla de juego tendrá botones para salir al menu principal.
-5. La pantalla de gameover indicará que perdiste con el score de la partida y el highscore.
-6. La pantalla de inicio tendra el titulo del juego, un boton para iniciar la partida y un boton para ver los creditos.
 
-
-### Plan de Trabajo
-- Usaremos la metodología scrum para el desarrollo del proyecto.
-- Usaremos el desarrollo en espiral para el proyecto.
-- Haremos reuniones por videollamada  semanales de 1hr para verificar el trabajo y los avances.
-- Individualmente dedicaremos aprox. 30 min diarios para desarrollar el proyecto.
-
-#### Tareas
-- Determinar objetivos Los 3
-- Análisis de riesgo Los 3
-- Planificación Los 3
-- Desarrollo Los 3
-- Pruebas
